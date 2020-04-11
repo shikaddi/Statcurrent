@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Did Italy Peak?</title>
+    <style>
+      h3 {
+        font-weight:100;
+        font-family: medium-content-serif-font,Georgia,Cambria;
+        text-align: justify
+      }
+      li {
+        font-weight:100;
+        font-family: medium-content-serif-font,Georgia,Cambria;
+        text-align: justify;
+        font-size: 1.75rem;
+      }
+      b {
+        font-weight: bold;
+      }
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid row pt-5">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6">
+        <h1 class="display-3 mt-5 border-bottom border-info"><b> Has Italy's Death from Covid-19 Peaked?</b></h1>
+        <h6 class="text-muted justify-content-end"> 6 april <span> </h6>
+        <h3>
+          <br>
+          <p>
+            So far, more than 16.000 people in Italy have lost the battle against Cobid-19.
+            For many days now, daily death toll in Italy is very high.
+            But while it has approached a 1000 deaths a day in Italy since the end of March,
+            so far the deaths did not exceed that value, thankfully.
+          </p>
+          <br>
+          <figure class="figure">
+            <img src="./deaths.png" class="figure-img img-fluid rounded" alt="..."/>
+              <figcaption class="figure-caption text-left">
+                The cumulative deaths due to covid-19 in Italy. After the epidemic, this will likely be a logistic curve.
+              </figcaption>
+            </figure>
+          <br>
+          <p>
+            For now, the daily deaths seem to be rather stagnant.
+            Fluctuating around (approximately) 800 for about 2 weeks now.
+            In Wuhan the deaths plateaud for ~2 weeks as well.
+            There seems to be reason for carefull hope.
+          </p>
+          <figure class="figure">
+            <img <img src="./deathsfig.png" class="figure-img img-fluid rounded" alt="..."/>
+              <figcaption class="figure-caption text-left">
+                The First derivative of the total deaths: daily deaths in Italy due to covid-19.
+              </figcaption>
+            </figure>
+          <br><br>
+          <p>
+            It is clear that the daily deaths in Italy has been plateauing for 2 weeks now.
+            It might even be said that the last few days there is a downward trend.
+            While some days it is still increasing, it appears that the peak was 10 days ago (28 march),
+            When 969 people died. The last seven days, the daily death count was below 800.
+            The last three days it was even below 700. This gives reason to think the peak is over and the virus is declining.
+          </p>
+          <figure class="figure">
+            <img src="./seconderiv.png" class="figure-img img-fluid rounded" alt="..."/>
+              <figcaption class="figure-caption text-left">
+                 The second derivate of the total deaths: the day to day fluctuations in daily deaths.
+              </figcaption>
+            </figure>
+        <br><br>
+        <p>
+          The final shape of the cumulative deaths should be logistic. Which means it increases exponentially at first,
+          then halfway through changes to a logarithmic shape. The exponential part is clear to see,
+          and as this part is plateauing the logarithmic part should start to be revealed.
+        </p>
+      <div class="col-lg-3"></div>
+      <div class="col-6">
+        <a href="https://shikaddi.github.io/Statcurrent/"> < The Under-reporting problem of corona cases in the west.</a>
+      </div>
+
+      <div class="container" style="height:300px;"> </div>
+    </div>
+  </body>
+  <script>
+
+  </script>
+</html>
