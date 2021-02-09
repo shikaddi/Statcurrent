@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Under reporting</title>
+    <style>
+      h3 {
+        font-weight:100;
+        font-family: medium-content-serif-font,Georgia,Cambria;
+        text-align: justify
+      }
+      li {
+        font-weight:100;
+        font-family: medium-content-serif-font,Georgia,Cambria;
+        text-align: justify;
+        font-size: 1.75rem;
+      }
+      b {
+        font-weight: bold;
+      }
+      .flag {
+        Width : 25px;
+        height: 25px;
+      }
+      .justify {
+        text-align: justify;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe class="container-fluid" src="./top.html" style="border:none;"></iframe>
+    <div class="container-fluid row pt-1">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6">
+        <h1 class="display-4 mt-0 justify border-bottom border-info"><b> My adblock extension didn't stop Facebook ads, so I made my own.</b></h1>
+        <h6 class="text-muted justify-content-end"> 4 February 2021<!-- <span> &nbsp;<img class="flag" src="eye.png"/>&nbsp;<span id="number">0</span>&nbsp;Views</span> --></h6>
+        <h3>
+          <br>
+          <p>
+            I remember my early days on the internet. Going to a website with multiple flashing banners telling my I am the 10.000th visitor and totally pinky-promise get a car for free.
+            Random intrusive pop-ups did their best to annoy me. And they totally succeeded at that, btw. My brother handed me this almighty invention: the adblocker.
+          </p>
+          <br>
+          <p>
+            As you are aware, the internet looks really different without adblock. Try any commercial ad-supported website without ad blocker, it's a nightmare to look at.
+            But now for year, no ads have bothered me. But the last few months, suddenly ads have appeared again on Facebook. It seems like adblock doesn't catch them because they are internal ads instead of ad networks.
+          </p>
+
+          <br>
+        </h3>
+        <figure class="figure text-center">
+          <img src="facebook ad.png" class="figure-img rounded text-center" alt="..."/>
+            <figcaption class="figure-caption text-left">
+              A facebook ad hogging my timeline. I don't even know french and I don't want to learn more about bothering other people with google ads.
+            </figcaption>
+          </figure>
+        <h3>
+          <br>
+          <p>
+            Now, blocking this ad is probably not possible, sadly. It's an part of an ad network. But what can be done is removing the ad after it's loaded.
+            So, what we want is an extension that detects and remove these ads.
+          </p>
+          <br>
+          <p>
+            A simple extension consists of basically four files. An image to use a the icon of the extension. A HTML file that describes what's shown when you press on the icon.
+            A javascript file that gets applied in your brower and a JSON file that configures the extension and says which file is which.
+          </p>
+          <br>
+          <p>
+            There are two locations where Facebook bothers me with ads. The top-right ads and the inline sponsored posts. For both locations some kind tag must be found to identify the ad positions.
+          </p>
+          <br>
+        </h3>
+      </div>
+      <div class="col-lg-3"></div>
+      <div class="col-2"></div>
+      <div class="col-8">
+        <figure class="figure">
+          <img src="sponsored rightline.png" class="figure-img img-fluid rounded" alt="..."/>
+          <figcaption class="figure-caption text-left">
+              The 'Data-pagelet="RightRail"' tag can be used to identify the ads in the top-right
+          </figcaption>
+        </figure>
+      </div>
+      <div class="col-2"></div>
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6">
+        <h3>
+          <br>
+          <p>
+            The "RightRail" tag identifies the whole side bar, which not only includes the ads but also the contact lists. But going down two childNodes is a div containing only the ads. Removing this div as soon as the document is loaded should remove the ads there.
+          </p>
+          <br>
+          <blockquote><pre>
+          function hideAd(){
+            const hook =  $("div[data-pagelet='RightRail']");
+            const target = hook.children().first().children().first().hide()
+          }
+        </pre></blockquote>
+          </div>
+          <div class="col-lg-3"></div>
+          <div class="col-2"></div>
+          <div class="col-8">
+            <figure class="figure">
+              <img src="sponsored inline.png" class="figure-img img-fluid rounded" alt="..."/>
+              <figcaption class="figure-caption text-left">
+                  The 'Aria-label="Sponsored"' tag can be used to identify the inline ads.
+              </figcaption>
+            </figure>
+          </div>
+        <div class="col-2"></div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <h3>
+          <br>
+          <p>
+            For the inline ads, every single post says "Sponsored" at the top. This "Sponsored" is located within an element with the "Aria-label" "Sponsored". Searching for this label identifies an element within the ad.
+            If you look for the parentNodes of this element until you stumble upon a div with no tags at all, then you identified the entire ad.
+          </p>
+          <br>
+          <blockquote><Pre>
+            const triggerWord = "spondsored";
+            function hideAd2(){
+              const triggered = $(`a[aria-label='${triggerWord}']`);
+              Array.prototype.slice.call(triggered).forEach((element) => {
+                while(element.parentNode.className !== "" || element.tagName !== "DIV") {
+                  element = element.parentNode;
+                }
+                element.parentNode.parentNode.remove()
+              })
+            }
+          </pre></blockquote>
+          <br>
+          <p>
+            New inline ads show up as you scroll down, but they're usually not visible when you load the initial page. The best way to remove them as they get pushed in by facebook is using an eventlistener that activates whenever you scroll.
+            So that each time you scroll down, the program checks whether new ads are generated to be removed.
+          </p>
+          <br>
+          <blockquote><pre>
+            let toggle = true;
+            document.addEventListener("scroll", function(){
+              if (toggle)
+                toggle = false;
+                setTimeout(function(){
+                  toggle = true;
+                  hideAd2();
+                }, 250)
+            })
+          </pre></blockquote>
+          <br>
+          <p>
+            Offcourse "Sponsored" is in English. For every different language option there is a different word you must search for. Therefore you must first identify the language choosen, pick the right word and search for that word.
+          </p>
+          <br>
+          <blockquote><pre>
+            let triggerWordList = {
+                "en" : "Sponsored"
+                //... ad more languages here
+            };
+            $("document").ready(function(){
+              const lang = document.documentElement.lang;
+              const triggerWord = triggerWordList[lang];
+          </pre></blockquote>
+          <br>
+        </h3>
+      </div>
+      <div class="col-lg-3"></div>
+      <div class="col-2"></div>
+      <div class="col-8">
+        <figure class="figure">
+          <img src="language.png" class="figure-img img-fluid rounded" alt="..."/>
+          <figcaption class="figure-caption text-left">
+              In facebook, the html-tag contains the language.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="col-lg-3"></div>
+      <div class="container" style="height:300px;"> </div>
+    </div>
+  </body>
+</html>
